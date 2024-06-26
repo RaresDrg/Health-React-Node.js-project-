@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/RaresDrg/Health-React-Node.js-project-",
+  "homepage": "https://raresdrg.github.io/Health-React-Node.js-project-/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
