@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://raresdrg.github.io/Health-React-Node.js-project-/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,9 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
+    "formik": "^2.4.6",
+    "modern-normalize": "^2.0.0",
     "react": "^18.3.1",
+    "react-datepicker": "^7.2.0",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.0"
+    "react-icons": "^5.2.1",
+    "react-loader-spinner": "^6.1.6",
+    "react-responsive": "^10.0.0",
+    "react-router-dom": "^6.24.0",
+    "react-select": "^5.8.0",
+    "styled-components": "^6.1.11",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
