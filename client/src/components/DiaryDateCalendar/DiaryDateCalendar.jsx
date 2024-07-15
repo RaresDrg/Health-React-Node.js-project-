@@ -1,30 +1,49 @@
-// import ReactDatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import calendarIcon from "../../assets/calendarIcon.svg";
 
-// import { addDays, subDays } from "react-datepicker/dist/date_utils.d.ts";
-import { useMediaQuery } from "react-responsive";
+import { useEffect, useState } from "react";
+import useResponsive from "../../hooks/useResponsive";
+
+import { useDispatch } from "react-redux";
+import { setCurrentDate } from "../../redux/diary/slice";
+
+import { toast } from "react-toastify";
+
+import { getDiaryDateStats } from "../../redux/diary/operations";
 
 const DiaryDateCalendar = ({ className: styles }) => {
   const [startDate, setStartDate] = useState(new Date());
-  const isOnMobile = useMediaQuery({ query: "(max-width: 767px)" });
+  const { isOnMobile } = useResponsive();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dataISO = new Date(startDate.toDateString()).toISOString();
+
+    dispatch(setCurrentDate(startDate.toLocaleDateString()));
+    dispatch(getDiaryDateStats(dataISO));
+  }, [startDate]);
 
   return (
     <div className={styles}>
       <DatePicker
         selected={startDate}
-        onChange={(pickedDate) => setStartDate(pickedDate)}
+        onChange={(pickedDate) => {
+          setStartDate(pickedDate);
+          toast.info(
+            `Your diary current date is: 
+            ${String(pickedDate.getDate()).padStart(2, 0)}.${String(
+              pickedDate.getMonth() + 1
+            ).padStart(2, 0)}.${String(pickedDate.getFullYear())}
+          `
+          );
+        }}
         dateFormat="dd.MM.yyyy"
         icon={<img src={calendarIcon} />}
         showIcon
         toggleCalendarOnIconClick
         maxDate={new Date()}
-        // highlightDates={[subDays(new Date(), 0)]}
         withPortal={isOnMobile ? true : false}
       />
     </div>

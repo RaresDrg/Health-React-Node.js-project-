@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import StyledDiaryAddProductForm from "../DiaryAddProductForm/DiaryAddProductForm.styled";
-import { IoReturnDownBackSharp } from "react-icons/io5";
 
 const AddProductModal = ({ className: styles, closeModal }) => {
   useEffect(() => {

@@ -1,14 +1,20 @@
 import { IoReturnDownBackSharp } from "react-icons/io5";
+import { HiX } from "react-icons/hi";
+import { useEffect } from "react";
+import useResponsive from "../../hooks/useResponsive";
 import {
   OrangeButton,
   WhiteButton,
 } from "../common/FormButton/FormButton.styled";
-import { HiX } from "react-icons/hi";
-import { useMediaQuery } from "react-responsive";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { deleteDiaryDateProduct } from "../../redux/diary/operations";
+import useDiary from "../../hooks/useDiary";
+import { toast } from "react-toastify";
 
 const DeleteProductModal = ({ className: styles, closeModal }) => {
-  const isOnMobile = useMediaQuery({ query: "(max-width: 767px)" });
+  const { isOnMobile } = useResponsive();
+  const dispatch = useDispatch();
+  const { diary } = useDiary();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -23,6 +29,20 @@ const DeleteProductModal = ({ className: styles, closeModal }) => {
       document.removeEventListener("keydown", addCloseEvent);
     };
   });
+
+  function handleDelete() {
+    dispatch(deleteDiaryDateProduct(diary.productToDelete._id))
+      .unwrap()
+      .then((value) => {
+        toast.success(value.message);
+      })
+      .catch((error) => {
+        const errorNotification =
+          error?.response?.data?.message || "Internal server error";
+        toast.error(errorNotification);
+      })
+      .finally(() => closeModal());
+  }
 
   return (
     <div
@@ -41,10 +61,9 @@ const DeleteProductModal = ({ className: styles, closeModal }) => {
 
         <div className="buttonWrapper">
           <OrangeButton
-            type={"submit"}
+            type={"button"}
             text={"Delete"}
-            // todo:
-            // handlerFunction={sterge produsul si se inchide modala}
+            handlerFunction={handleDelete}
           />
 
           <WhiteButton

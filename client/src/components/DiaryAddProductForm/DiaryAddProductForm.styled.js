@@ -184,11 +184,11 @@ const StyledDiaryAddProductForm = styled(DiaryAddProductForm)`
 
               &option {
                 cursor: pointer;
-                transition: all 0.35s ease-in-out;
+                /* transition: all 0.2s ease-in-out; */
 
                 &:hover {
                   background-color: #fc842d;
-                  transition: all 0.35s ease-in-out;
+                  /* transition: all 0.2s ease-in-out; */
                   color: #fff;
                 }
               }

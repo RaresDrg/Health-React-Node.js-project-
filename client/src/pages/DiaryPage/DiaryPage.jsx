@@ -1,21 +1,38 @@
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import useResponsive from "../../hooks/useResponsive";
+import useAuth from "../../hooks/useAuth";
+
+import Container from "../../components/common/Container/Container.styled";
+import StyledRestrictedPageModal from "../../components/RestrictedPageModal/RestrictedPageModal.styled";
 import StyledDiaryDateCalendar from "../../components/DiaryDateCalendar/DiaryDateCalendar.styled";
 import StyledDiaryProductsList from "../../components/DiaryProductsList/DiaryProductsList.styled";
-import Container from "../../components/common/Container/Container.styled";
-
-import { useState } from "react";
-import StyledDeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal.styled";
-import { useMediaQuery } from "react-responsive";
 import StyledAddProductBtn from "../../components/AddProductBtn/AddProductBtn.styled";
-import StyledAddProductModal from "../../components/AddProductModal/AddProductModal.styled";
-import StyledRightSideBar from "../../components/RightSideBar/RightSideBar.styled";
 import StyledDiaryAddProductForm from "../../components/DiaryAddProductForm/DiaryAddProductForm.styled";
+import StyledAddProductModal from "../../components/AddProductModal/AddProductModal.styled";
+import StyledDeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal.styled";
+import StyledRightSideBar from "../../components/RightSideBar/RightSideBar.styled";
+
+import { useDispatch } from "react-redux";
+import { updateUserWithDailyRate } from "../../redux/auth/operations.js";
 
 const DiaryPage = ({ className: styles }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dailyCalorieIntake = localStorage.getItem("dailyCalorieIntake");
+
+    if (dailyCalorieIntake) {
+      dispatch(updateUserWithDailyRate({ dailyCalorieIntake }));
+      localStorage.removeItem("dailyCalorieIntake");
+    }
+  });
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const isOnMobile = useMediaQuery({ maxWidth: 767 });
-  const isNotOnMobile = useMediaQuery({ minWidth: 768 });
+
+  const { isOnMobile, isNotOnMobile } = useResponsive();
+  const { user } = useAuth();
 
   return (
     <>
@@ -31,7 +48,10 @@ const DiaryPage = ({ className: styles }) => {
           {isOnMobile && (
             <StyledAddProductBtn
               type={"button"}
-              handlerFunction={() => setIsAddModalOpen(true)}
+              handlerFunction={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                setIsAddModalOpen(true);
+              }}
             />
           )}
         </Container>
@@ -41,6 +61,9 @@ const DiaryPage = ({ className: styles }) => {
           <StyledRightSideBar />
         </Container>
       </aside>
+
+      {!user.dailyCalorieIntake &&
+        createPortal(<StyledRestrictedPageModal />, document.body)}
 
       {isDeleteModalOpen &&
         createPortal(

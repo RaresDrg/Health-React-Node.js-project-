@@ -23,6 +23,7 @@ const StyledRegisterForm = styled(RegisterForm)`
           width: 100%;
           height: 70px;
           margin-bottom: 15px;
+          position: relative;
 
           & {
             label {
@@ -63,7 +64,7 @@ const StyledRegisterForm = styled(RegisterForm)`
               letter-spacing: 0.04em;
               color: black;
               margin-top: 5px;
-              padding: 5px 20px;
+              padding: 5px 40px 5px 20px;
               transition: all 0.45s ease-in-out;
               color: #20b602;
 
@@ -92,6 +93,12 @@ const StyledRegisterForm = styled(RegisterForm)`
               font-size: 12px;
               margin-top: 2px;
               text-transform: lowercase;
+            }
+
+            div.showPassword {
+              position: absolute;
+              bottom: 20px;
+              right: 0;
             }
           }
         }

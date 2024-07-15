@@ -1,20 +1,23 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import useAuth from "../../hooks/useAuth";
 import StyledExitModal from "../ExitModal/ExitModal.styled";
 
 const UserInfo = ({ className: styles }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // todo: user din db
-  const userData = {
-    name: "Rares Frumosu",
-  };
+  const { user } = useAuth();
 
   return (
     <>
       <div className={styles}>
-        <span>{userData.name}</span>
-        <button type="button" onClick={() => setIsModalOpen(true)}>
+        <span>{user.name}</span>
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            setIsModalOpen(true);
+          }}
+        >
           Exit
         </button>
       </div>

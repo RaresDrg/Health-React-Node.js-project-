@@ -2,13 +2,22 @@ import { useEffect } from "react";
 import { IoReturnDownBackSharp } from "react-icons/io5";
 import { HiX } from "react-icons/hi";
 import { CTAButton } from "../common/FormButton/FormButton.styled";
-import { useMediaQuery } from "react-responsive";
+import useResponsive from "../../hooks/useResponsive";
+import useAuth from "../../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DailyCalorieIntake = ({ className: styles, closeModal }) => {
-  // todo: kcal din db sau o calculez eu
-  const kcal = 2800;
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const isOnMobile = useMediaQuery({ query: "(max-width: 767px)" });
+  const { user } = useAuth();
+
+  const dailyCalorieIntake =
+    location.pathname === "/calculator"
+      ? user.dailyCalorieIntake
+      : localStorage.getItem("dailyCalorieIntake");
+
+  const { isOnMobile } = useResponsive();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -37,7 +46,7 @@ const DailyCalorieIntake = ({ className: styles, closeModal }) => {
         </div>
         <p className="title">Your recommended daily calorie intake is</p>
         <p className="kcal">
-          {kcal} <span>kcal</span>
+          {dailyCalorieIntake} <span>kcal</span>
         </p>
 
         <div className="recomandation">
@@ -45,16 +54,15 @@ const DailyCalorieIntake = ({ className: styles, closeModal }) => {
           <ol>
             <li>Flour products</li>
             <li>Milk</li>
-            <li>Red mea</li>
+            <li>Red meat</li>
             <li>Smoked meats</li>
           </ol>
         </div>
 
         <CTAButton
-          // onClick={handlerFunction}
           type={"button"}
           text={"Start losing weight"}
-          // handlerFunction={}
+          handlerFunction={() => navigate("/diary")}
         />
       </div>
     </div>

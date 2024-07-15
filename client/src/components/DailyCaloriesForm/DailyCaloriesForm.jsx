@@ -2,8 +2,34 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import { CTAButton } from "../common/FormButton/FormButton.styled";
+import { useDispatch } from "react-redux";
+import {
+  getDailyRate,
+  updateUserWithDailyRate,
+} from "../../redux/auth/operations";
+
+import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const DailyCaloriesForm = ({ className: styles, openModal }) => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    document.addEventListener("wheel", stopIncrepementOnSroll);
+
+    function stopIncrepementOnSroll(event) {
+      if (document.activeElement.type === "number") {
+        document.activeElement.blur();
+      }
+    }
+
+    return () => {
+      document.removeEventListener("wheel", stopIncrepementOnSroll);
+    };
+  });
+
   const validationSchema = Yup.object({
     height: Yup.number()
       .min(100, "Height must be between: 100 - 230 cm")
@@ -25,7 +51,10 @@ const DailyCaloriesForm = ({ className: styles, openModal }) => {
       .max(160, "Weight must be between: 40 - 160 kg")
       .required("Required *")
       .integer("Round the value to the nearest integer"),
-    bloodType: Yup.string(),
+    bloodType: Yup.string().oneOf(
+      ["1", "2", "3", "4"],
+      "Blood type can be either: 1, 2, 3, or 4"
+    ),
   });
 
   const initialValues = {
@@ -36,16 +65,36 @@ const DailyCaloriesForm = ({ className: styles, openModal }) => {
     bloodType: "1",
   };
 
-  const handleSumbit = async (values, props) => {
-    // todo:
-    // setSubmitting(true);
-    // props.resetForm();
+  const handleSumbit = (values, formikBag) => {
+    const { setSubmitting, resetForm } = formikBag;
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    setSubmitting(true);
 
-    console.log(values);
-    console.log("props:", props);
-    // openModal(true);
+    dispatch(getDailyRate(values))
+      .unwrap()
+      .then((value) => {
+        location.pathname === "/calculator"
+          ? dispatch(
+              updateUserWithDailyRate({
+                dailyCalorieIntake: value.data.dailyCalorieIntake,
+              })
+            )
+          : localStorage.setItem(
+              "dailyCalorieIntake",
+              value.data.dailyCalorieIntake
+            );
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        toast.success(value.message);
+        resetForm();
+        openModal();
+      })
+      .catch((error) => {
+        const errorNotification =
+          error?.response?.data?.message || "Internal server error";
+        toast.error(errorNotification);
+      })
+      .finally(() => setSubmitting(false));
   };
 
   return (
@@ -139,7 +188,6 @@ const DailyCaloriesForm = ({ className: styles, openModal }) => {
               type={"submit"}
               text={isSubmitting ? "Loading..." : "Calculate"}
               isDisabled={isSubmitting ? true : false}
-              handlerFunction={openModal}
             />
           </Form>
         )}

@@ -1,32 +1,15 @@
 @import "../node_modules/modern-normalize/modern-normalize.css";
 @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap");
 
-:root {
-  --font-families: Arimo, sans-serif, Arial, Helvetica;
-  --bold-text: 700;
-  --regular-text: 400;
-
-  color-scheme: light dark;
-
-  /* light-scheme-variables */
-  --bg-color-light-scheme: rgba(255, 255, 255, 1);
-
-  /* dark-scheme-variables */
-  --bg-color-dark-scheme: #242424;
-  color: red;
-}
-
 body {
   margin: 0;
   /* display: flex;
   place-items: center; */
   /* min-width: 320px; */
   min-height: 100vh;
-
-  background-color: var(--bg-color-light-scheme);
-
-  font-weight: var(--bold-text);
-  font-family: var(--font-families);
+  background-color: rgba(255, 255, 255, 1);
+  font-weight: 700;
+  font-family: Arimo, sans-serif, Arial, Helvetica;
 }
 
 h1,
@@ -54,9 +37,6 @@ button {
   border: none;
   background-color: transparent;
   padding: 0;
-
-  /* background-color: grey;
-  color: magenta; */
 }
 
 a {
@@ -76,27 +56,3 @@ input::-webkit-outer-spin-button {
     margin: 0 auto;
   }
 }
-
-/* 
-@media (min-width: 1280px) {
-  width: 1280px;
-  position: relative;
-  padding-bottom: 190px;
-  padding-top: calc(90px + 85px);
-
-  background-repeat: no-repeat;
-} */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    todo: => aici trebuie gandita ca la mine e browser -ul defaul pe dark
-    background-color: #242424;
-    color: rgba(255, 255, 255, 0.87);
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */

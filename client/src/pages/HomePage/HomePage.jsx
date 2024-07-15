@@ -3,7 +3,6 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import StyledDailyCaloriesForm from "../../components/DailyCaloriesForm/DailyCaloriesForm.styled";
 import StyledDailyCalorieIntake from "../../components/DailyCalorieIntake/DailyCalorieIntake.styled";
-import StyledLoadingScreen from "../../components/common/LoadingScreen/LoadingScreen.styled";
 
 const HomePage = ({ className: styles }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,8 +20,6 @@ const HomePage = ({ className: styles }) => {
           <StyledDailyCalorieIntake closeModal={() => setIsModalOpen(false)} />,
           document.body
         )}
-
-      {/* {isModalOpen && createPortal(<StyledLoadingScreen />, document.body)} */}
     </>
   );
 };

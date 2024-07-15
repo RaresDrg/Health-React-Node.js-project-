@@ -25,7 +25,11 @@ const StyledCalculatorPage = styled(CalculatorPage)`
     @media (min-width: 1280px) {
       width: 763px;
       padding-top: 165px;
-      padding-bottom: 65px;
+      padding-bottom: 60px;
+
+      &:has(> div) > div {
+        width: initial;
+      }
     }
   }
 

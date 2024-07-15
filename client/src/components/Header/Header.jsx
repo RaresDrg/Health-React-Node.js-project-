@@ -1,25 +1,19 @@
-import StyledBurgerMenuBtn from "../BurgerMenuBtn/BurgerMenuBtn.styled";
 import Container from "../common/Container/Container.styled";
 import StyledLogo from "../Logo/Logo.styled";
-
-import { AuthNavigation, AppNavigation } from "../Navigation/Navigation.styled";
-
-import { useMediaQuery } from "react-responsive";
 import StyledUserInfo from "../UserInfo/UserInfo.styled";
-
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { AuthNavigation, AppNavigation } from "../Navigation/Navigation.styled";
+import StyledBurgerMenuBtn from "../BurgerMenuBtn/BurgerMenuBtn.styled";
 import StyledBurgerMenu from "../BurgerMenu/BurgerMenu.styled.js";
+import { createPortal } from "react-dom";
+import { useEffect, useState } from "react";
+import useResponsive from "../../hooks/useResponsive.js";
+import useAuth from "../../hooks/useAuth.js";
 
 const Header = ({ className: styles }) => {
-  // todo: user logat din db
-  const isLoggedIn = true;
-
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
 
-  const isOnMobile = useMediaQuery({ maxWidth: 767 });
-  const isOnTablet = useMediaQuery({ minWidth: 768, maxWidth: 1279 });
-  const isOnDesktop = useMediaQuery({ minWidth: 1280 });
+  const { isLoggedIn } = useAuth();
+  const { isOnMobile, isOnTablet, isOnDesktop } = useResponsive();
 
   return (
     <>
@@ -53,6 +47,7 @@ const Header = ({ className: styles }) => {
       {isLoggedIn && isOnMobile && <StyledUserInfo />}
 
       {isBurgerMenuOpen &&
+        isLoggedIn &&
         createPortal(
           <StyledBurgerMenu closeModal={() => setIsBurgerMenuOpen(false)} />,
           document.body

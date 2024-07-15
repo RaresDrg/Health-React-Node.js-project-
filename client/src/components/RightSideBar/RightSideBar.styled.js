@@ -43,6 +43,13 @@ const StyledRightSideBar = styled(RightSideBar)`
         div:nth-of-type(2) {
           align-items: flex-end;
         }
+
+        & {
+          span.toMuch {
+            color: red;
+            font-weight: 700;
+          }
+        }
       }
     }
 
@@ -72,8 +79,10 @@ const StyledRightSideBar = styled(RightSideBar)`
 
   @media (min-width: 768px) {
     flex-direction: row;
-    gap: 150px;
-    width: initial;
+    gap: 0;
+    width: 610px;
+    margin: 0;
+    justify-content: space-between;
 
     & {
       div.summary {
@@ -110,6 +119,7 @@ const StyledRightSideBar = styled(RightSideBar)`
     flex-direction: column;
     gap: 60px;
     align-items: flex-start;
+    width: initial;
 
     & {
       div.summary {

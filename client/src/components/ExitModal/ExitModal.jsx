@@ -1,14 +1,17 @@
+import { useEffect } from "react";
+import useResponsive from "../../hooks/useResponsive";
 import { IoReturnDownBackSharp } from "react-icons/io5";
+import { HiX } from "react-icons/hi";
 import {
   OrangeButton,
   WhiteButton,
 } from "../common/FormButton/FormButton.styled";
-import { HiX } from "react-icons/hi";
-import { useMediaQuery } from "react-responsive";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/operations";
 
 const ExitModal = ({ className: styles, closeModal }) => {
-  const isOnMobile = useMediaQuery({ query: "(max-width: 767px)" });
+  const { isOnMobile } = useResponsive();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -39,10 +42,9 @@ const ExitModal = ({ className: styles, closeModal }) => {
 
         <div className="buttonWrapper">
           <OrangeButton
-            type={"submit"}
+            type={"button"}
             text={"Exit"}
-            // todo:
-            // handlerFunction={sterge produsul si se inchide modala}
+            handlerFunction={() => dispatch(logout())}
           />
 
           <WhiteButton

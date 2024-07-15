@@ -16,6 +16,11 @@ const StyledDiaryPage = styled(DiaryPage)`
       width: 763px;
       padding-top: 165px;
       padding-bottom: 101px;
+
+      &:has(> div) > div {
+        width: initial;
+        height: 477px;
+      }
     }
   }
 

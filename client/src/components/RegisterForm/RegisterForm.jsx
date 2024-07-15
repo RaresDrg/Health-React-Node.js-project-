@@ -1,13 +1,23 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import UseAnimations from "react-useanimations";
+import visibility from "react-useanimations/lib/visibility";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/auth/operations";
+import { toast } from "react-toastify";
 import {
   OrangeButton,
   WhiteButton,
 } from "../common/FormButton/FormButton.styled";
-import { useNavigate } from "react-router-dom";
 
 const RegisterForm = ({ className: styles }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+  const [confimPasswordIsVisible, setConfimPasswordIsVisible] = useState(false);
 
   const initialValues = {
     name: "",
@@ -38,8 +48,31 @@ const RegisterForm = ({ className: styles }) => {
       .required("Required *"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = (values, formikBag) => {
+    const { name, email, password } = values;
+    const { setSubmitting, setFieldError, resetForm } = formikBag;
+
+    setSubmitting(true);
+
+    dispatch(register({ name, email, password }))
+      .unwrap()
+      .then((value) => {
+        toast.success(value.message);
+        resetForm();
+        navigate("/login");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      })
+      .catch((error) => {
+        const errorNotification =
+          error?.response?.data?.message || "Internal server error";
+        toast.error(errorNotification);
+
+        if (error?.response?.status === 409) {
+          setFieldError("email", "This email is already used");
+          document.querySelector("form").scrollIntoView();
+        }
+      })
+      .finally(() => setSubmitting(false));
   };
 
   return (
@@ -49,13 +82,14 @@ const RegisterForm = ({ className: styles }) => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, errors }) => (
-          <Form>
+        {({ isSubmitting, errors, values }) => (
+          <Form autoComplete="off">
             <h1>Register</h1>
 
             <div className={`field ${errors.name ? "onError" : ""}`}>
               <label htmlFor="nameInput">Name *</label>
               <Field
+                autoComplete="off"
                 id="nameInput"
                 type="text"
                 name="name"
@@ -69,6 +103,7 @@ const RegisterForm = ({ className: styles }) => {
             <div className={`field ${errors.email ? "onError" : ""}`}>
               <label htmlFor="emailInput">Email *</label>
               <Field
+                autoComplete="off"
                 id="emailInput"
                 type="email"
                 name="email"
@@ -82,14 +117,23 @@ const RegisterForm = ({ className: styles }) => {
             <div className={`field ${errors.password ? "onError" : ""}`}>
               <label htmlFor="passwordInput">Password *</label>
               <Field
+                autoComplete="off"
                 id="passwordInput"
-                type="password"
+                type={passwordIsVisible ? "text" : "password"}
                 name="password"
                 placeholder="Please, enter your password !"
               />
               <div className="error">
                 <ErrorMessage name="password" component="span" />
               </div>
+              {values.password && (
+                <UseAnimations
+                  animation={visibility}
+                  onClick={() => setPasswordIsVisible((prev) => !prev)}
+                  size={30}
+                  className="showPassword"
+                />
+              )}
             </div>
 
             <div
@@ -99,14 +143,23 @@ const RegisterForm = ({ className: styles }) => {
             >
               <label htmlFor="confirmPasswordInput">Confirm Password *</label>
               <Field
+                autoComplete="off"
                 id="confirmPasswordInput"
-                type="password"
+                type={confimPasswordIsVisible ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Please, confirm your password !"
               />
               <div className="error">
                 <ErrorMessage name="confirmPassword" component="span" />
               </div>
+              {values.confirmPassword && (
+                <UseAnimations
+                  animation={visibility}
+                  onClick={() => setConfimPasswordIsVisible((prev) => !prev)}
+                  size={30}
+                  className="showPassword"
+                />
+              )}
             </div>
 
             <div className="buttonWrapper">
@@ -114,13 +167,13 @@ const RegisterForm = ({ className: styles }) => {
                 type={"submit"}
                 text={isSubmitting ? "Loading..." : "Register"}
                 isDisabled={isSubmitting ? true : false}
-                // handlerFunction={Trimite log in}
               />
 
               <WhiteButton
                 type="button"
                 text={"Log in"}
                 handlerFunction={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                   navigate("/login");
                 }}
               />

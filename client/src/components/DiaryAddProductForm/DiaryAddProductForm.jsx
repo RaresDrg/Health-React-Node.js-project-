@@ -1,43 +1,54 @@
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import AsyncSelect from "react-select/async";
+import useResponsive from "../../hooks/useResponsive";
+
+import StyledAddProductBtn from "../AddProductBtn/AddProductBtn.styled";
 import {
   OrangeButton,
   WhiteButton,
 } from "../common/FormButton/FormButton.styled";
-import AsyncSelect from "react-select/async";
-
-import { useMediaQuery } from "react-responsive";
-import StyledAddProductBtn from "../AddProductBtn/AddProductBtn.styled";
+import {
+  addDiaryDateProduct,
+  getPossibleProducts,
+} from "../../redux/diary/operations";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const DiaryAddProductForm = ({ className: styles, closeModal }) => {
-  const productsOptions = [
-    "Mere",
-    "Pere",
-    "Cacat",
-    "Pisat",
-    "Banane",
-    "Salam",
-    "Pere",
-    "Cacat",
-    "Pisat",
-    "Banane",
-    "Salam",
-    "Pere",
-    "Cacat",
-    "Pisat",
-    "Banane",
-    "Salam",
-    "Pere",
-    "Cacat",
-    "Pisat",
-    "Banane",
-    "Salam",
-  ];
+  const [products, setProducts] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
 
-  const productsOptionsFormat = productsOptions.map((item) => ({
-    value: item,
-    label: item,
-  }));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const possibleProducts = await getPossibleProducts();
+
+        setProducts(possibleProducts);
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("wheel", stopIncrepementOnSroll);
+
+    function stopIncrepementOnSroll(event) {
+      if (document.activeElement.type === "number") {
+        document.activeElement.blur();
+      }
+    }
+
+    return () => {
+      document.removeEventListener("wheel", stopIncrepementOnSroll);
+    };
+  });
 
   const initialValues = {
     productName: "",
@@ -52,36 +63,53 @@ const DiaryAddProductForm = ({ className: styles, closeModal }) => {
       .required("Required *"),
   });
 
-  const loadOptions = (searchValue, callback) => {
-    // todo: => aici i-au datele din db
-    // const data = api.getData()
-    // const data = productsOptions;
+  async function loadOptions(searchValue, callback) {
+    await new Promise((resolve) => setTimeout(resolve, 250));
 
-    // const optionsFormat = data.map((item) => {
-    //   return { value: item, label: item };
-    // });
+    const productsOptionsFormat = products.map((item) => ({
+      value:
+        item.title.charAt(0).toUpperCase() + item.title.slice(1).toLowerCase(),
+      label:
+        item.title.charAt(0).toUpperCase() + item.title.slice(1).toLowerCase(),
+    }));
 
     const filteredOptions = productsOptionsFormat.filter((item) =>
       item.label.toLowerCase().includes(searchValue.toLowerCase())
     );
 
     callback(filteredOptions);
+  }
+
+  const handleSumbit = async (values, formikBag) => {
+    const { setSubmitting, resetForm } = formikBag;
+
+    setSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    const name = values.productName;
+    const grams = values.grams;
+    const kcalPer100 = products.find(
+      (item) => item.title.toLowerCase() === name.toLowerCase()
+    ).calories;
+    const kcal = (kcalPer100 / 100) * grams;
+
+    dispatch(addDiaryDateProduct({ name, grams, kcal }))
+      .unwrap()
+      .then((value) => {
+        closeModal && closeModal();
+        toast.success(value.message);
+        setSelectedOption(null);
+        resetForm();
+      })
+      .catch((error) => {
+        const errorNotification =
+          error?.response?.data?.message || "Internal server error";
+        toast.error(errorNotification);
+      })
+      .finally(() => setSubmitting(false));
   };
 
-  const handleSumbit = async (values, errors) => {
-    // todo:
-    // setSubmitting(true);
-    // props.resetForm();
-
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    console.log("values", values);
-    console.log("errors:", errors);
-    // openModal(true);
-  };
-
-  const isOnMobile = useMediaQuery({ query: "(max-width: 767px)" });
-  const isNotOnMobile = useMediaQuery({ query: "(min-width: 768px)" });
+  const { isOnMobile, isNotOnMobile } = useResponsive();
 
   return (
     <div className={styles}>
@@ -100,17 +128,20 @@ const DiaryAddProductForm = ({ className: styles, closeModal }) => {
                   <AsyncSelect
                     onFocus={() => {
                       props.form.setFieldTouched("productName", true, true);
+                      props.form.setFieldValue("productName", "");
+                      setSelectedOption(null);
                     }}
                     onChange={(value) => {
                       props.form.setFieldValue("productName", value.value);
+                      setSelectedOption(value);
                     }}
                     noOptionsMessage={() => "No product found"}
                     className="react-select-container"
                     classNamePrefix="react-select"
                     name="productName"
                     loadOptions={loadOptions}
-                    defaultOptions={productsOptionsFormat}
                     placeholder="Enter product name"
+                    value={selectedOption}
                   />
                 )}
               </Field>
@@ -138,8 +169,6 @@ const DiaryAddProductForm = ({ className: styles, closeModal }) => {
                   text="Add"
                   type="submit"
                   isDisabled={isSubmitting ? true : false}
-                  // todo: => adaugat produs in db
-                  // handlerFunction={}
                 />
 
                 <WhiteButton
@@ -154,7 +183,6 @@ const DiaryAddProductForm = ({ className: styles, closeModal }) => {
               <StyledAddProductBtn
                 type={"submit"}
                 isDisabled={isSubmitting ? true : false}
-                /*handlerFunction={}}  */
               />
             )}
           </Form>

@@ -1,23 +1,26 @@
+import useAuth from "../../hooks/useAuth";
+import useDiary from "../../hooks/useDiary";
+
 const RightSideBar = ({ className: styles }) => {
-  // todo: => datele aici
-  const data = "13.08.2023";
+  const { currentDate, diary } = useDiary();
+  const { user } = useAuth();
 
-  const left = 20500;
-  const consumed = 800;
-  const dailyRate = 2800;
-  const n = 20;
+  const date = new Date(currentDate);
 
-  const food = [
-    "mere",
-    "pere",
-    "piersici",
-    "cacat asfasf as fas fsa gsagsag asg ",
-  ];
+  const day = String(date.getDate()).padStart(2, 0);
+  const month = String(date.getMonth() + 1).padStart(2, 0);
+  const year = String(date.getFullYear());
+  const formatedData = `${day}.${month}.${year}`;
+
+  const dailyRate = diary.dailyRate || user.dailyCalorieIntake;
+  const left = diary.left || user.dailyCalorieIntake;
+  const consumed = diary.consumed || 0;
+  const rateOfNormal = diary.rateOfNormal || "0 %";
 
   return (
     <div className={styles}>
       <div className="summary">
-        <h3>Summary for {data}</h3>
+        <h3>Summary for {formatedData}</h3>
         <div className="columns">
           <div>
             <span>Left</span>
@@ -26,20 +29,22 @@ const RightSideBar = ({ className: styles }) => {
             <span>Rate of normal</span>
           </div>
           <div>
-            <span>{left} kcal</span>
-            <span>{consumed} kcal</span>
+            <span>{left > 0 ? left : 0} kcal</span>
+            <span className={consumed > dailyRate ? "toMuch" : ""}>
+              {consumed} kcal
+            </span>
             <span>{dailyRate} kcal</span>
-            <span>{n} %</span>
+            <span>{rateOfNormal}</span>
           </div>
         </div>
       </div>
       <div className="recomandation">
         <h3>Food not recommended</h3>
         <div>
-          <span>{food[0]}</span>
-          <span>{food[1]}</span>
-          <span>{food[2]}</span>
-          <span>{food[3]}</span>
+          <span>Flour products</span>
+          <span>Milk</span>
+          <span>Red meat</span>
+          <span>Smoked meats</span>
         </div>
       </div>
     </div>
