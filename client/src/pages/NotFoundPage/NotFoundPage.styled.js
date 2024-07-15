@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import NotFoundPage from "./NotFoundPage";
-import getBgLayer from "../../utils/getBgLayers";
 
 const StyledNotFoundPage = styled(NotFoundPage)`
   width: 100vw;

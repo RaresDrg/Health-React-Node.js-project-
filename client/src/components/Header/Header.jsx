@@ -5,7 +5,7 @@ import { AuthNavigation, AppNavigation } from "../Navigation/Navigation.styled";
 import StyledBurgerMenuBtn from "../BurgerMenuBtn/BurgerMenuBtn.styled";
 import StyledBurgerMenu from "../BurgerMenu/BurgerMenu.styled.js";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useResponsive from "../../hooks/useResponsive.js";
 import useAuth from "../../hooks/useAuth.js";
 

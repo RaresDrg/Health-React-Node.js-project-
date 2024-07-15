@@ -1,6 +1,6 @@
 import { ThreeDots } from "react-loader-spinner";
 
-const LoadingSpinner = ({ className: styles }) => {
+const LoadingSpinner = () => {
   return (
     <ThreeDots
       visible={true}

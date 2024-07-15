@@ -7,7 +7,7 @@ async function getDiaryDate(req, res, next) {
     const { id: owner } = req.user;
 
     if (
-      new Date(currentDate) == "Invalid Date" ||
+      new Date(currentDate) === "Invalid Date" ||
       new Date(currentDate).toISOString() !== currentDate
     ) {
       res.status(400).json({
@@ -83,7 +83,7 @@ async function addProduct(req, res, next) {
 
     const { currentDate } = req.params;
     if (
-      new Date(currentDate) == "Invalid Date" ||
+      new Date(currentDate) === "Invalid Date" ||
       new Date(currentDate).toISOString() !== currentDate
     ) {
       res.status(400).json({
@@ -178,7 +178,7 @@ async function deleteProduct(req, res, next) {
     const { currentDate, productId } = req.params;
 
     if (
-      new Date(currentDate) == "Invalid Date" ||
+      new Date(currentDate) === "Invalid Date" ||
       new Date(currentDate).toISOString() !== currentDate
     ) {
       res.status(400).json({

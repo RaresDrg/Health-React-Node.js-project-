@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import RightSideBar from "./RightSideBar";
-import getBgLayer from "../../utils/getBgLayers";
 
 const StyledRightSideBar = styled(RightSideBar)`
-  /* display: grid;
-  justify-content: center;
-  gap: 40px; */
-
   display: flex;
   flex-direction: column;
   margin: 0 auto;

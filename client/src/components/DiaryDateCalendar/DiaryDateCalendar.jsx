@@ -23,7 +23,7 @@ const DiaryDateCalendar = ({ className: styles }) => {
 
     dispatch(setCurrentDate(startDate.toLocaleDateString()));
     dispatch(getDiaryDateStats(dataISO));
-  }, [startDate]);
+  }, [dispatch, startDate]);
 
   return (
     <div className={styles}>

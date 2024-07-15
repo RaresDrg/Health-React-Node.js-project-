@@ -1,5 +1,4 @@
 import express from "express";
-import validateAuth from "../../config/config-passport.js";
 import diaryController from "../../controller/diaryController.js";
 
 const router = express.Router();

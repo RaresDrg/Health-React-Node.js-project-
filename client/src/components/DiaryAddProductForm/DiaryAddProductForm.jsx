@@ -39,7 +39,7 @@ const DiaryAddProductForm = ({ className: styles, closeModal }) => {
   useEffect(() => {
     document.addEventListener("wheel", stopIncrepementOnSroll);
 
-    function stopIncrepementOnSroll(event) {
+    function stopIncrepementOnSroll() {
       if (document.activeElement.type === "number") {
         document.activeElement.blur();
       }

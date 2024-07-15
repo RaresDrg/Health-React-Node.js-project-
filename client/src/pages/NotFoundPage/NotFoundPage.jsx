@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import notFoundBgVideo from "../../assets/backgorunds/notFoundPage/notFoundBgVideo.mp4";
-import { ThreeDots } from "react-loader-spinner";
 import "animate.css";
 import UseAnimations from "react-useanimations";
 import arrowDown from "react-useanimations/lib/arrowDown";

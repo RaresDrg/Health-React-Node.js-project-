@@ -41,7 +41,7 @@ const authSlice = createSlice({
       // *Register
       .addCase(register.pending, utils.handlePending)
       .addCase(register.rejected, utils.handleRejected)
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
       })
@@ -66,7 +66,7 @@ const authSlice = createSlice({
       // *Logout
       .addCase(logout.pending, utils.handlePending)
       .addCase(logout.rejected, utils.handleRejected)
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.fulfilled, (state) => {
         state.user = {
           name: null,
           email: null,
@@ -98,7 +98,7 @@ const authSlice = createSlice({
       // *Calc daily rate
       .addCase(getDailyRate.pending, utils.handlePending)
       .addCase(getDailyRate.rejected, utils.handleRejected)
-      .addCase(getDailyRate.fulfilled, (state, action) => {
+      .addCase(getDailyRate.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
       })
