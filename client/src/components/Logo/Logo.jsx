@@ -2,7 +2,6 @@ import logo from "../../assets/logo.svg";
 
 const Logo = ({ className: styles }) => {
   return (
-    // todo: href-ul bun
     <a className={styles} href="/">
       <img src={logo} alt="app-logo" />
       <p>

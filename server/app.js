@@ -4,8 +4,6 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
 
-// import validateAuth from "./config/config-passport.js";
-// import contactsRouter from "./routes/api/contacts.js";
 import usersRouter from "./routes/api/users.js";
 import diaryRouter from "./routes/api/diary.js";
 import validateAuth from "./config/config-passport.js";
@@ -20,8 +18,6 @@ app.use(express.json());
 
 app.use("/api/users", usersRouter);
 app.use("/api/diary", validateAuth, diaryRouter);
-
-// app.use("/api/contacts", validateAuth, contactsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

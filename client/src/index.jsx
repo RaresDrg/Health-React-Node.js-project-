@@ -9,7 +9,7 @@ import { store, persistor } from "./redux/store.js";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter>
+      <BrowserRouter basename="https://healthapp-mern.netlify.app">
         <App />
       </BrowserRouter>
     </PersistGate>

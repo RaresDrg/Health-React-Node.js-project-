@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import StyledDailyCaloriesForm from "../../components/DailyCaloriesForm/DailyCaloriesForm.styled";
 import StyledRightSideBar from "../../components/RightSideBar/RightSideBar.styled";
 import Container from "../../components/common/Container/Container.styled";
-import StyledDailyCalorieIntake from "../../components/DailyCalorieIntake/DailyCalorieIntake.styled";
 import { createPortal } from "react-dom";
+
+const StyledDailyCalorieIntake = lazy(() =>
+  import("../../components/DailyCalorieIntake/DailyCalorieIntake.styled")
+);
 
 const CalculatorPage = ({ className: styles }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,11 +24,15 @@ const CalculatorPage = ({ className: styles }) => {
         </Container>
       </aside>
 
-      {isModalOpen &&
-        createPortal(
-          <StyledDailyCalorieIntake closeModal={() => setIsModalOpen(false)} />,
-          document.body
-        )}
+      <Suspense>
+        {isModalOpen &&
+          createPortal(
+            <StyledDailyCalorieIntake
+              closeModal={() => setIsModalOpen(false)}
+            />,
+            document.body
+          )}
+      </Suspense>
     </>
   );
 };

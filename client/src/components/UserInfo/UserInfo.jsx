@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { createPortal } from "react-dom";
 import useAuth from "../../hooks/useAuth";
-import StyledExitModal from "../ExitModal/ExitModal.styled";
+
+const StyledExitModal = lazy(() => import("../ExitModal/ExitModal.styled"));
 
 const UserInfo = ({ className: styles }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,11 +23,13 @@ const UserInfo = ({ className: styles }) => {
         </button>
       </div>
 
-      {isModalOpen &&
-        createPortal(
-          <StyledExitModal closeModal={() => setIsModalOpen(false)} />,
-          document.body
-        )}
+      <Suspense>
+        {isModalOpen &&
+          createPortal(
+            <StyledExitModal closeModal={() => setIsModalOpen(false)} />,
+            document.body
+          )}
+      </Suspense>
     </>
   );
 };

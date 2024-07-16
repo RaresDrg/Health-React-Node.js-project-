@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import SharedLayout from "./components/common/SharedLayout/SharedLayout";
 import PrivatePage from "./pages/PrivatePage/PrivatePage";
 import RestrictedPage from "./pages/RestrictedPage/RestrictedPage";
-import StyledNotFoundPage from "./pages/NotFoundPage/NotFoundPage.styled";
 
+const NotFoundPage = lazy(() =>
+  import("./pages/NotFoundPage/NotFoundPage.styled")
+);
 const HomePage = lazy(() => import("./pages/HomePage/HomePage.styled"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage.styled"));
 const RegisterPage = lazy(() =>
@@ -32,7 +34,15 @@ const App = () => {
             element={<PrivatePage page={CalculatorPage} />}
           />
         </Route>
-        <Route path="*" element={<StyledNotFoundPage />} />
+
+        <Route
+          path="*"
+          element={
+            <Suspense>
+              <NotFoundPage />
+            </Suspense>
+          }
+        />
       </Routes>
     </>
   );

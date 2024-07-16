@@ -1,8 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-// TODO: posibil schimbat aici, si shimbat api-urile
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://health-react-node-js-project.onrender.com";
 
 const utils = {
   setAuthHeader: (token) =>
