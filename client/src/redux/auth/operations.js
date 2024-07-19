@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-axios.defaults.baseURL = "https://health-react-node-js-project.onrender.com";
+axios.defaults.baseURL = "https://healthapp-server.vercel.app";
 
 const utils = {
   setAuthHeader: (token) =>
