@@ -9,7 +9,6 @@ const StyledHomePage = styled(HomePage)`
   @media (min-width: 768px) {
     padding-top: 100px;
     padding-bottom: 400px;
-
     width: 768px;
     margin: 0 auto;
 
