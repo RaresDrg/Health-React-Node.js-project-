@@ -1,9 +1,16 @@
 {
   "version": 2,
+  "buildCommand": "next build",
   "builds": [
     {
-      "src": "package.json",
-      "use": "vercel-sapper"
+      "src": "*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }
