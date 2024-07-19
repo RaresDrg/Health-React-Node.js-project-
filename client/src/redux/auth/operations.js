@@ -13,7 +13,7 @@ const register = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 3500));
+      await new Promise((resolve) => setTimeout(resolve, 2500));
       const response = await axios.post("/api/users/register", userData);
 
       return response.data;
@@ -25,7 +25,7 @@ const register = createAsyncThunk(
 
 const login = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
   try {
-    // await new Promise((resolve) => setTimeout(resolve, 3500));
+    await new Promise((resolve) => setTimeout(resolve, 2500));
     const response = await axios.post("/api/users/login", userData);
 
     utils.setAuthHeader(response.data.data.token);
@@ -38,7 +38,7 @@ const login = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
 
 const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     await axios.get("/api/users/logout");
 
     utils.clearAuthHeader();
@@ -73,7 +73,7 @@ const getDailyRate = createAsyncThunk(
   "auth/getDailyRate",
   async (userData, thunkAPI) => {
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 3500));
+      await new Promise((resolve) => setTimeout(resolve, 2500));
       const response = await axios.post("/api/users/calcDailyRate", userData);
 
       return response.data;
