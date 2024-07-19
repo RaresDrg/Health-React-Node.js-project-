@@ -11,10 +11,10 @@ const StyledLoginPage = styled(LoginPage)`
     padding-bottom: 400px;
     width: 768px;
     margin: 0 auto;
-    background-image: url(${getBgLayer("tablet", "banana")}),
-      url(${getBgLayer("tablet", "leaves")}),
-      url(${getBgLayer("tablet", "strawberry")}),
-      url(${getBgLayer("tablet", "vector")});
+    background-image: url("${getBgLayer("tablet", "banana")}"),
+      url("${getBgLayer("tablet", "leaves")}"),
+      url("${getBgLayer("tablet", "strawberry")}"),
+      url("${getBgLayer("tablet", "vector")}");
     background-repeat: no-repeat;
     background-position: bottom right, bottom left, bottom 170px right 5px,
       bottom right;
@@ -25,10 +25,10 @@ const StyledLoginPage = styled(LoginPage)`
     position: relative;
     padding-bottom: 340px;
     padding-top: calc(45px + 85px);
-    background-image: url(${getBgLayer("desktop", "banana")}),
-      url(${getBgLayer("desktop", "leaves")}),
-      url(${getBgLayer("desktop", "strawberry")}),
-      url(${getBgLayer("desktop", "vector")});
+    background-image: url("${getBgLayer("desktop", "banana")}"),
+      url("${getBgLayer("desktop", "leaves")}"),
+      url("${getBgLayer("desktop", "strawberry")}"),
+      url("${getBgLayer("desktop", "vector")}");
     background-repeat: no-repeat;
     background-position: top right, top -30px left 305px,
       bottom 40px right -35px, bottom right;
