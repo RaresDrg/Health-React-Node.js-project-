@@ -27,10 +27,7 @@ const StyledHomePage = styled(HomePage)`
     position: relative;
     padding-bottom: 190px;
     padding-top: calc(90px + 85px);
-    background-image: url(${getBgLayer("desktop", "banana")}),
-      url(${getBgLayer("desktop", "leaves")}),
-      url(${getBgLayer("desktop", "strawberry")}),
-      url(${getBgLayer("desktop", "vector")});
+    background-image: url(${getBgLayer("desktop", "banana")});
     background-repeat: no-repeat;
     background-position: top right, top -79px left 251px, bottom 50px right,
       bottom right;
